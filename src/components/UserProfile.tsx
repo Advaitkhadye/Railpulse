@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../lib/firebase';
-import { LogOut, User, X } from 'lucide-react';
+import { LogOut, X } from 'lucide-react';
 
 export function UserProfile() {
     const { user } = useAuth();

@@ -4,7 +4,7 @@ import { Map } from '../components/map/Map';
 import { INITIAL_TRAINS, simulateTrainMovement } from '../lib/data';
 import type { Train } from '../types';
 import { UserProfile } from '../components/UserProfile';
-import { auth } from '../lib/firebase';
+
 
 export function Dashboard() {
     const [trains, setTrains] = useState<Train[]>(INITIAL_TRAINS);
