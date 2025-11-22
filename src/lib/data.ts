@@ -20,7 +20,9 @@ export const STATIONS: Station[] = [
 
     // Harbour Line
     { id: 'st-vdl', name: 'Vadala Road', coordinates: { lat: 19.0166, lng: 72.8587 } },
+    { id: 'st-chb', name: 'Chunabhatti', coordinates: { lat: 19.0510, lng: 72.8760 } },
     { id: 'st-vsh', name: 'Vashi', coordinates: { lat: 19.0770, lng: 72.9980 } },
+    { id: 'st-mnk', name: 'Mankhurd', coordinates: { lat: 19.0485, lng: 72.9322 } },
     { id: 'st-pvl', name: 'Panvel', coordinates: { lat: 18.9894, lng: 73.1175 } },
 ];
 
@@ -45,7 +47,9 @@ export const TRACK_COORDINATES = {
     Harbour: [
         [18.9400, 72.8353], // CSMT
         [19.0166, 72.8587], // Vadala
+        [19.0510, 72.8760], // Chunabhatti
         [19.0657, 72.8910], // Kurla
+        [19.0485, 72.9322], // Mankhurd
         [19.0770, 72.9980], // Vashi
         [18.9894, 73.1175], // Panvel
     ]
@@ -93,14 +97,27 @@ function generateTrains(): Train[] {
     let idCounter = 90001;
 
     lines.forEach(line => {
-        // Generate 20 trains per line
-        for (let i = 0; i < 20; i++) {
+        // Generate 30 trains per line
+        for (let i = 0; i < 30; i++) {
             const direction = i % 2 === 0 ? 'UP' : 'DOWN';
             // We need to manually select stations based on line since STATIONS is a flat list.
             let lineStations: Station[] = [];
-            if (line === 'Western') lineStations = STATIONS.slice(0, 7);
-            else if (line === 'Central') lineStations = STATIONS.slice(7, 13);
-            else lineStations = STATIONS.slice(13, 16);
+            if (line === 'Western') {
+                lineStations = STATIONS.slice(0, 7);
+            } else if (line === 'Central') {
+                lineStations = STATIONS.slice(7, 13);
+            } else {
+                // Harbour Line: CSMT -> Vadala -> Chunabhatti -> Kurla -> Mankhurd -> Vashi -> Panvel
+                lineStations = [
+                    STATIONS[7],  // CSMT
+                    STATIONS[13], // Vadala
+                    STATIONS[14], // Chunabhatti
+                    STATIONS[10], // Kurla
+                    STATIONS[16], // Mankhurd
+                    STATIONS[15], // Vashi
+                    STATIONS[17]  // Panvel
+                ];
+            }
 
             // Pick random start/end points for variety, but generally full route
             const source = direction === 'DOWN' ? lineStations[0].name : lineStations[lineStations.length - 1].name;

@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Tooltip } from 'react-leaflet';
 import type { Train } from '../../types';
 import 'leaflet/dist/leaflet.css';
 import { divIcon } from 'leaflet';
@@ -71,6 +71,9 @@ export function Map({ trains, selectedTrainId, onTrainSelect }: MapProps) {
                                 click: () => onTrainSelect(train.id),
                             }}
                         >
+                            <Tooltip direction="top" offset={[0, -20]} opacity={1} className="font-bold text-sm">
+                                {train.source} → {train.destination}
+                            </Tooltip>
                             <Popup className="custom-popup">
                                 <div className="p-2 min-w-[200px]">
                                     <div className="flex justify-between items-start mb-2">

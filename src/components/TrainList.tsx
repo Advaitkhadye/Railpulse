@@ -7,9 +7,11 @@ interface TrainListProps {
     trains: Train[];
     selectedTrainId: string | null;
     onTrainSelect: (trainId: string) => void;
+    isMobileExpanded?: boolean;
+    onToggleMobileExpand?: () => void;
 }
 
-export function TrainList({ trains, selectedTrainId, onTrainSelect }: TrainListProps) {
+export function TrainList({ trains, selectedTrainId, onTrainSelect, isMobileExpanded = false, onToggleMobileExpand }: TrainListProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedTrainId, setExpandedTrainId] = useState<string | null>(null);
 
@@ -26,19 +28,29 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect }: TrainListP
     };
 
     return (
-        <div className="h-full flex flex-col bg-white border-r border-gray-200 w-96 shadow-2xl z-10 text-gray-900 font-sans">
-            <div className="p-6 bg-slate-900 text-white shadow-lg relative overflow-hidden">
+        <div className="h-full flex flex-col bg-white w-full md:w-96 text-gray-900 font-sans">
+            <div className="p-4 md:p-6 bg-slate-900 text-white shadow-lg relative overflow-hidden shrink-0">
                 {/* Decorative background element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-10 -mt-10 pointer-events-none"></div>
 
-                <div className="flex items-center gap-4 mb-6 relative z-10">
+                <div className="flex items-center gap-4 mb-4 md:mb-6 relative z-10">
                     <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10 shadow-inner">
-                        <img src="/logo.png" alt="RailPulse Logo" className="w-10 h-10 object-contain" />
+                        <img src={`${import.meta.env.BASE_URL}logo.png`} alt="RailPulse Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">RailPulse</h1>
-                        <p className="text-xs text-blue-200 font-medium tracking-wide uppercase">Live Train Tracker</p>
+                        <h1 className="text-xl md:text-2xl font-bold tracking-tight">RailPulse</h1>
+                        <p className="text-[10px] md:text-xs text-blue-200 font-medium tracking-wide uppercase">Live Train Tracker</p>
                     </div>
+                    {/* Mobile Close Button */}
+                    <button
+                        onClick={onToggleMobileExpand}
+                        className="md:hidden ml-auto p-2 text-slate-400 hover:text-white bg-white/5 rounded-full"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
                 </div>
 
                 <div className="relative z-10">
@@ -48,7 +60,7 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect }: TrainListP
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search train, station..."
-                        className="w-full bg-slate-800/50 text-white pl-10 pr-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder-slate-400 text-sm"
+                        className="w-full bg-slate-800/50 text-white pl-10 pr-4 py-2 md:py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder-slate-400 text-sm"
                     />
                 </div>
             </div>
@@ -70,7 +82,7 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect }: TrainListP
                                 onClick={() => onTrainSelect(train.id)}
                                 className={`border-b border-gray-200 bg-white cursor-pointer transition-all hover:bg-blue-50 ${selectedTrainId === train.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : 'border-l-4 border-l-transparent'}`}
                             >
-                                <div className="p-4">
+                                <div className="p-3 md:p-4">
                                     <div className="flex justify-between items-start">
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
@@ -78,16 +90,16 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect }: TrainListP
                                                     train.line === 'Central' ? 'bg-yellow-600' :
                                                         'bg-purple-600'
                                                     }`}>{train.line[0]}</span>
-                                                <h3 className="font-bold text-lg text-gray-800">{train.source} <ArrowRight size={14} className="inline mx-1" /> {train.destination}</h3>
+                                                <h3 className="font-bold text-base md:text-lg text-gray-800">{train.source} <ArrowRight size={14} className="inline mx-1" /> {train.destination}</h3>
                                             </div>
-                                            <div className="text-sm text-gray-600 flex items-center gap-1">
+                                            <div className="text-xs md:text-sm text-gray-600 flex items-center gap-1">
                                                 <span className="font-semibold text-blue-700">Next: {nextStop?.stationId.replace('st-', '').toUpperCase() || 'End'}</span>
                                                 <span className="text-gray-400">•</span>
                                                 <span className="text-green-600 font-medium">ETA: {eta}</span>
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-2">
-                                            <span className={`text-xs font-bold px-2 py-1 rounded ${train.status === 'ON_TIME' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                            <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded ${train.status === 'ON_TIME' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                                 {train.status === 'ON_TIME' ? 'On Time' : 'Late'}
                                             </span>
                                             <button
