@@ -31,10 +31,7 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect, onToggleMobi
         train.destination.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const toggleExpand = (e: React.MouseEvent, trainId: string) => {
-        e.stopPropagation();
-        setExpandedTrainId(expandedTrainId === trainId ? null : trainId);
-    };
+
 
     return (
         <div className="h-full flex flex-col bg-white w-full md:w-96 text-gray-900 font-sans">
