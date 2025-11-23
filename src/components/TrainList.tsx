@@ -7,11 +7,10 @@ interface TrainListProps {
     trains: Train[];
     selectedTrainId: string | null;
     onTrainSelect: (trainId: string) => void;
-    isMobileExpanded?: boolean;
     onToggleMobileExpand?: () => void;
 }
 
-export function TrainList({ trains, selectedTrainId, onTrainSelect, isMobileExpanded = false, onToggleMobileExpand }: TrainListProps) {
+export function TrainList({ trains, selectedTrainId, onTrainSelect, onToggleMobileExpand }: TrainListProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedTrainId, setExpandedTrainId] = useState<string | null>(null);
 

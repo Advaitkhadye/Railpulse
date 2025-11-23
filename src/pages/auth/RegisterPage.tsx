@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import { Loader2, Check, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -62,12 +62,7 @@ export function RegisterPage() {
         }
     };
 
-    const ValidationItem = ({ valid, text }: { valid: boolean; text: string }) => (
-        <div className={`flex items-center gap-2 text-xs ${valid ? 'text-green-600' : 'text-slate-400'}`}>
-            {valid ? <Check size={14} /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-300" />}
-            <span>{text}</span>
-        </div>
-    );
+
 
     return (
         <div className="text-center">
@@ -125,8 +120,8 @@ export function RegisterPage() {
                             <div className="flex justify-between items-center">
                                 <span className="text-xs font-medium text-slate-500">Password Strength</span>
                                 <span className={`text-xs font-bold ${Object.values(validations).filter(Boolean).length <= 2 ? 'text-red-500' :
-                                        Object.values(validations).filter(Boolean).length <= 4 ? 'text-yellow-500' :
-                                            'text-green-500'
+                                    Object.values(validations).filter(Boolean).length <= 4 ? 'text-yellow-500' :
+                                        'text-green-500'
                                     }`}>
                                     {Object.values(validations).filter(Boolean).length <= 2 ? 'Weak' :
                                         Object.values(validations).filter(Boolean).length <= 4 ? 'Medium' :
@@ -136,8 +131,8 @@ export function RegisterPage() {
                             <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                                 <div
                                     className={`h-full transition-all duration-300 ease-out ${Object.values(validations).filter(Boolean).length <= 2 ? 'bg-red-500 w-1/3' :
-                                            Object.values(validations).filter(Boolean).length <= 4 ? 'bg-yellow-500 w-2/3' :
-                                                'bg-green-500 w-full'
+                                        Object.values(validations).filter(Boolean).length <= 4 ? 'bg-yellow-500 w-2/3' :
+                                            'bg-green-500 w-full'
                                         }`}
                                 />
                             </div>
