@@ -59,7 +59,6 @@ export function Dashboard() {
                     trains={trains}
                     selectedTrainId={selectedTrainId}
                     onTrainSelect={handleTrainSelect}
-                    isMobileExpanded={isMobileListExpanded}
                     onToggleMobileExpand={() => setIsMobileListExpanded(!isMobileListExpanded)}
                 />
             </div>
