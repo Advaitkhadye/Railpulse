@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Train } from '../types';
-import { Search, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, ArrowRight, Users } from 'lucide-react';
 import { calculateETA, getNextStations } from '../lib/utils';
 
 interface TrainListProps {
@@ -9,6 +9,16 @@ interface TrainListProps {
     onTrainSelect: (trainId: string) => void;
     onToggleMobileExpand?: () => void;
 }
+
+const getCrowdColor = (level: string) => {
+    switch (level) {
+        case 'LOW': return 'text-green-500 bg-green-100';
+        case 'MEDIUM': return 'text-yellow-600 bg-yellow-100';
+        case 'HIGH': return 'text-orange-600 bg-orange-100';
+        case 'SUPER_DENSE': return 'text-red-600 bg-red-100';
+        default: return 'text-gray-500 bg-gray-100';
+    }
+};
 
 export function TrainList({ trains, selectedTrainId, onTrainSelect, onToggleMobileExpand }: TrainListProps) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -78,7 +88,10 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect, onToggleMobi
                         return (
                             <div
                                 key={train.id}
-                                onClick={() => onTrainSelect(train.id)}
+                                onClick={() => {
+                                    onTrainSelect(train.id);
+                                    setExpandedTrainId(expandedTrainId === train.id ? null : train.id);
+                                }}
                                 className={`border-b border-gray-200 bg-white cursor-pointer transition-all hover:bg-blue-50 ${selectedTrainId === train.id ? 'bg-blue-50 border-l-4 border-l-blue-600' : 'border-l-4 border-l-transparent'}`}
                             >
                                 <div className="p-3 md:p-4">
@@ -98,11 +111,15 @@ export function TrainList({ trains, selectedTrainId, onTrainSelect, onToggleMobi
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-2">
-                                            <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded ${train.status === 'ON_TIME' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                                {train.status === 'ON_TIME' ? 'On Time' : 'Late'}
-                                            </span>
+                                            <div className="flex items-center gap-1">
+                                                <div className={`p-1 rounded-full ${getCrowdColor(train.crowdLevel)}`} title={`Crowd: ${train.crowdLevel}`}>
+                                                    <Users size={14} />
+                                                </div>
+                                                <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded ${train.status === 'ON_TIME' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                                    {train.status === 'ON_TIME' ? 'On Time' : 'Late'}
+                                                </span>
+                                            </div>
                                             <button
-                                                onClick={(e) => toggleExpand(e, train.id)}
                                                 className="p-1 hover:bg-gray-200 rounded-full text-gray-500"
                                             >
                                                 {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}

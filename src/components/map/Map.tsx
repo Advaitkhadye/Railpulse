@@ -61,7 +61,17 @@ const TrainMarker = memo(({ train, isSelected, onSelect }: { train: Train, isSel
                     <div className="text-sm space-y-1">
                         <p className="text-gray-600 font-medium">{train.source} → {train.destination}</p>
                         <p className="text-blue-600">Next: {train.nextStationId.replace('st-', '').toUpperCase()}</p>
-                        <p className="text-xs text-gray-500">Speed: {Math.round(train.speed)} km/h</p>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <span>Speed: {Math.round(train.speed)} km/h</span>
+                            <span>•</span>
+                            <span className={`font-bold ${train.crowdLevel === 'LOW' ? 'text-green-600' :
+                                    train.crowdLevel === 'MEDIUM' ? 'text-yellow-600' :
+                                        train.crowdLevel === 'HIGH' ? 'text-orange-600' :
+                                            'text-red-600'
+                                }`}>
+                                Crowd: {train.crowdLevel.replace('_', ' ')}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </Popup>
