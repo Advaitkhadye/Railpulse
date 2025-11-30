@@ -97,8 +97,8 @@ function generateTrains(): Train[] {
     let idCounter = 90001;
 
     lines.forEach(line => {
-        // Generate 30 trains per line
-        for (let i = 0; i < 30; i++) {
+        // Generate 50 trains per line
+        for (let i = 0; i < 50; i++) {
             const direction = i % 2 === 0 ? 'UP' : 'DOWN';
             // We need to manually select stations based on line since STATIONS is a flat list.
             let lineStations: Station[] = [];
