@@ -3,7 +3,7 @@ import type { Train } from '../../types';
 import 'leaflet/dist/leaflet.css';
 import { divIcon } from 'leaflet';
 import { TRACK_COORDINATES } from '../../lib/data';
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 interface MapProps {
     trains: Train[];
@@ -38,9 +38,17 @@ const createTrainIcon = (colorClass: string, heading: number, isSelected: boolea
 // Memoized Marker Component
 const TrainMarker = memo(({ train, isSelected, onSelect }: { train: Train, isSelected: boolean, onSelect: (id: string) => void }) => {
     const color = train.status === 'DELAYED' ? 'border-red-500' : 'border-green-500';
+    const markerRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (isSelected && markerRef.current) {
+            markerRef.current.openPopup();
+        }
+    }, [isSelected]);
 
     return (
         <Marker
+            ref={markerRef}
             position={[train.coordinates.lat, train.coordinates.lng]}
             icon={createTrainIcon(color, train.heading, isSelected)}
             eventHandlers={{
@@ -65,9 +73,9 @@ const TrainMarker = memo(({ train, isSelected, onSelect }: { train: Train, isSel
                             <span>Speed: {Math.round(train.speed)} km/h</span>
                             <span>•</span>
                             <span className={`font-bold ${train.crowdLevel === 'LOW' ? 'text-green-600' :
-                                    train.crowdLevel === 'MEDIUM' ? 'text-yellow-600' :
-                                        train.crowdLevel === 'HIGH' ? 'text-orange-600' :
-                                            'text-red-600'
+                                train.crowdLevel === 'MEDIUM' ? 'text-yellow-600' :
+                                    train.crowdLevel === 'HIGH' ? 'text-orange-600' :
+                                        'text-red-600'
                                 }`}>
                                 Crowd: {train.crowdLevel.replace('_', ' ')}
                             </span>

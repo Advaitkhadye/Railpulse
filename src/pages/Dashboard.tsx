@@ -14,7 +14,7 @@ export function Dashboard() {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTrains(currentTrains => simulateTrainMovement(currentTrains));
-        }, 1000); // Update every second
+        }, 50); // Update every 50ms for smooth animation
 
         return () => clearInterval(intervalId);
     }, []);

@@ -188,7 +188,7 @@ export function simulateTrainMovement(trains: Train[]): Train[] {
         }
 
         // Move towards target (simplified)
-        const speedFactor = 0.0005; // Adjust for simulation speed
+        const speedFactor = 0.000025; // Adjusted for 50ms updates (was 0.0005 for 1000ms)
         const moveLat = (deltaLat / distance) * speedFactor;
         const moveLng = (deltaLng / distance) * speedFactor;
 
