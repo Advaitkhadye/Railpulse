@@ -23,8 +23,6 @@ export function Dashboard() {
         setSelectedTrainId(trainId);
     };
 
-
-
     return (
         <div className="relative h-screen w-screen overflow-hidden bg-gray-900 text-white">
             {/* Mobile Toggle Button (Floating) */}

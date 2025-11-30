@@ -6,11 +6,17 @@ import { LogOut, X } from 'lucide-react';
 export function UserProfile() {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const [imageError, setImageError] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     const email = user?.email || '';
     const initial = email.charAt(0).toUpperCase();
     const displayName = user?.displayName || email.split('@')[0];
+
+    // Reset image error when user changes
+    useEffect(() => {
+        setImageError(false);
+    }, [user?.photoURL]);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -34,8 +40,13 @@ export function UserProfile() {
                 onClick={() => setIsOpen(!isOpen)}
                 className="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg font-medium shadow-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-                {user?.photoURL ? (
-                    <img src={user.photoURL} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                {user?.photoURL && !imageError ? (
+                    <img
+                        src={user.photoURL}
+                        alt="Profile"
+                        className="h-full w-full rounded-full object-cover"
+                        onError={() => setImageError(true)}
+                    />
                 ) : (
                     initial
                 )}
@@ -58,8 +69,13 @@ export function UserProfile() {
                         {/* Large Avatar */}
                         <div className="relative mb-3">
                             <div className="h-20 w-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-medium shadow-xl">
-                                {user?.photoURL ? (
-                                    <img src={user.photoURL} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                                {user?.photoURL && !imageError ? (
+                                    <img
+                                        src={user.photoURL}
+                                        alt="Profile"
+                                        className="h-full w-full rounded-full object-cover"
+                                        onError={() => setImageError(true)}
+                                    />
                                 ) : (
                                     initial
                                 )}
